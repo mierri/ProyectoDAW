@@ -7,3 +7,4 @@
 2. Ciau Martin Osmar Rubén
 3. Góngora Paredes Andrea Natalia
 4. González Álvarez María Fernanda
+![Mafer González](/assets/mafer.jpg)
