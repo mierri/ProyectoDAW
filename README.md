@@ -8,4 +8,4 @@
 3. Góngora Paredes Andrea Natalia
 4. González Álvarez María Fernanda
 
-<img src="/assets/mafer.jpg" alt="Mafer González" width="200" height="293"/>
+<img src="/assets/mafer.jpg" alt="Mafer González" width="150" height="200"/>
