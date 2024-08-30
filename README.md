@@ -8,4 +8,9 @@
 3. Góngora Paredes Andrea Natalia
 4. González Álvarez María Fernanda
 
-<img src="/assets/mafer.jpg" alt="Mafer González" width="150" height="200"/>
+| Integrantes | Foto |
+|-------------|------|
+|Caballero Beltrán Mariana||
+|Ciau Martin Osmar Rubén||
+|Góngora Paredes Andrea Natalia||
+|González Álvarez María Fernanda||
