@@ -15,7 +15,7 @@ export const HomeRoutes = [
       element: <DetallesEvaluacion />,
     },
     {
-      path: "pages/evaluaciones/new",
+      path: "pages/evaluaciones/nuevo",
       element: <FormularioEvaluacion />,
     },
     {
