@@ -1,6 +1,8 @@
 
 export const DetallesEvaluacion = () => {
   return (
-    <div>DetallesEvaluacion</div>
+    <main className="min-h-screen">
+        {/* Aqui va su html */}
+    </main>
   )
 }

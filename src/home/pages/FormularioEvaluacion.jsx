@@ -2,6 +2,8 @@
 
 export const FormularioEvaluacion = () => {
   return (
-    <div>FormularioEvaluacion</div>
+    <main className="min-h-screen">
+        {/* Aqui va su html */}
+    </main>
   )
 }
