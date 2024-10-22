@@ -7,6 +7,7 @@ export const Footer = () => {
 
   const [messageContent, setMessageContent] = useState('');
   const [placeholder, setPlaceholder] = useState('Mensaje');
+  const [isSending, setIsSending] = useState(false);
 
   const onChangeMessage = ( {target} ) => {
     const { value } = target;
@@ -17,11 +18,13 @@ export const Footer = () => {
     event.preventDefault();
     if ( messageContent.trim() === '' ) return;
     
+    setIsSending(true);
     setPlaceholder('Ha sido enviado');
     setMessageContent('');
 
     setTimeout(() => {
       setPlaceholder('Mensaje');
+      setIsSending(false);
     }, 2000);
   
   }
@@ -39,7 +42,7 @@ export const Footer = () => {
             value={messageContent}
             onChange={onChangeMessage}
           ></textarea>
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded-full h-[40px] w-[40px] flex items-center justify-center">
+          <button disabled={isSending} type="submit" className="bg-blue-500 text-white p-2 rounded-full h-[40px] w-[40px] flex items-center justify-center">
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </form>
