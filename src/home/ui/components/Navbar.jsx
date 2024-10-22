@@ -1,5 +1,4 @@
-// Navbar.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavbarMobile } from "./NavbarMobile";
 import { NavbarDesktop } from "./NavbarDesktop";
 
