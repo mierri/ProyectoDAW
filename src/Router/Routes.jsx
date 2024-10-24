@@ -23,6 +23,6 @@ export const getRoutes = () => createBrowserRouter([
     },
     {
         path: "/*",
-        element: <Navigate to={"/auth/login"} />,
+        element: <Navigate to={"/auth/login"} />, //Corregir ruta
     },
 ]);

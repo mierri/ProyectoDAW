@@ -8,6 +8,6 @@ export const AdminRoutes = [
   },
   {
     path: "*",
-    element: <Navigate to={"/admin/login"} />,
+    element: <Navigate to={"/login"} />,
   },
 ];

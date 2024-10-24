@@ -100,8 +100,8 @@ export const NavbarMobile = ( ) => {
 
           <div className="mt-10 flex items-center justify-center">
             <div className="flex items-center justify-evenly flex-wrap w-full max-w-sm">
-              <Link className="btn__Black mt-5">Iniciar Sesión</Link>
-              <Link className="btn__white mt-5">Crear Cuenta</Link>
+              <Link className="btn__Black mt-5" to='/login'>Iniciar Sesión</Link>
+              <Link className="btn__white mt-5" to='/login'>Crear Cuenta</Link>
             </div>
           </div>
         </div>
