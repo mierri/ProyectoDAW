@@ -457,6 +457,10 @@ Login & Register
         transform: translate(-50%, 0);
         left: 50%;
     }
+
+    .panels__container {
+        pointer-events: none;
+    }
 }
 
 @media (max-width: 570px) {
