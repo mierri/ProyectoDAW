@@ -1,11 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
 import { useForm } from "../../hooks";
+import { handleKeyPress, showErrorAlert, showSuccess, validateUser } from "./helpers";
 
 const initialFormSingUp = {
   userSignIn: "",
   passwordSignIn: "",
+}
+
+const formValidations = {
+  userSignIn: [(value) => value.trim() !== '', 'El usuario es obligatorio'],
+  passwordSignIn: [(value) => value.trim() !== '', 'La contraseña es obligatoria'],
 }
 
 export const FormSignIn = () => {
@@ -15,26 +20,32 @@ export const FormSignIn = () => {
     passwordSignIn,
     onInputChange,
     onResetForm,
-  } = useForm(initialFormSingUp);
+    isFormValid,
+  } = useForm(initialFormSingUp, formValidations);
 
-  const onSubmitFormSignIn = ( event ) => {
-    event.preventDefault();
+  const onSubmitFormSignIn = (e) => {
+    e.preventDefault();
 
-    if ( userSignIn.trim() === '' || passwordSignIn.trim() === '' ) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Todos los campos son obligatorios',
-        icon:'error',
-        timer: 1500,
-        showConfirmButton: false,
-      });
+    if (!isFormValid) {
+      showErrorAlert('Todos los campos son obligatorios');
       return;
     };
 
-    // TODO: Implementar lógica de inicio de sesión
+    const validations = [
+      { valid: validateUser(userSignIn), message: 'Ingrese un usuario válido, solo letras y números' },
+    ]
 
+    for (const { valid, message } of validations) {
+      if (!valid) {
+        showErrorAlert(message);
+        return;
+      }
+    }
+
+    showSuccess('Iniciando Sesión');
+    onResetForm();
+    // TODO: Implementar lógica de inicio de sesión
     console.log({ userSignIn, passwordSignIn });
-  
   }
 
 
@@ -53,6 +64,7 @@ export const FormSignIn = () => {
           id="userSignIn" 
           value={userSignIn} 
           onChange={onInputChange}
+          onKeyDown={handleKeyPress}
           autoComplete="username"
         />
       </div>

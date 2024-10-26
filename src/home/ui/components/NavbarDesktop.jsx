@@ -54,8 +54,8 @@ export const NavbarDesktop = () => {
 
             <div className="w-full max-w-72">
                 <div className="flex items-center justify-evenly">
-                    <Link className="btn__Black" to='/login'>Iniciar Sesión</Link>
-                    <Link className="btn__white" to='/login'>Crear Cuenta</Link>
+                    <Link className="btn__Black" to='/auth'>Iniciar Sesión</Link>
+                    <Link className="btn__white" to='/auth'>Crear Cuenta</Link>
                 </div>
             </div>
         </div>
