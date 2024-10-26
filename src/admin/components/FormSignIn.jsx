@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "../../hooks";
+import { faEye, faEyeSlash, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { handleKeyPress, showErrorAlert, showSuccess, validateUser } from "./helpers";
+import { useForm } from "../../hooks";
 
 const initialFormSingUp = {
   userSignIn: "",
@@ -14,6 +15,7 @@ const formValidations = {
 }
 
 export const FormSignIn = () => {
+  const [visibilityPassword, setVisibilityPassword] = useState(false);
 
   const {
     userSignIn,
@@ -46,8 +48,11 @@ export const FormSignIn = () => {
     onResetForm();
     // TODO: Implementar lógica de inicio de sesión
     console.log({ userSignIn, passwordSignIn });
-  }
+  };
 
+  const toggleVisibilityPassword = () => {
+    setVisibilityPassword(!visibilityPassword);
+  };
 
   return (
     <form onSubmit={onSubmitFormSignIn} className="form-login sign-in-form">
@@ -74,7 +79,7 @@ export const FormSignIn = () => {
           <FontAwesomeIcon className="custom__icon" icon={faLock} />
         </i>
         <input 
-          type="password" 
+          type={visibilityPassword ? 'text' : 'password'} 
           placeholder="Contraseña" 
           name="passwordSignIn" 
           id="passwordSignIn" 
@@ -82,6 +87,11 @@ export const FormSignIn = () => {
           onChange={onInputChange}
           autoComplete="current-password"
         />
+        <i>
+          <span onClick={toggleVisibilityPassword} className="cursor-pointer p-3" role="button">
+            {visibilityPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+          </span>
+        </i>
       </div>
 
       <input
