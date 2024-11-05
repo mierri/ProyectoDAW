@@ -89,7 +89,7 @@ export const FormSignIn = () => {
         />
         <i>
           <span onClick={toggleVisibilityPassword} className="cursor-pointer p-3" role="button">
-            {visibilityPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+            {visibilityPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
           </span>
         </i>
       </div>
