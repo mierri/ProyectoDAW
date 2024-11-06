@@ -5,7 +5,14 @@ export default {
     './public/index.html',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+      },
+      colors: {
+        customYellow: '#E9A21A'
+      }
+    },
   },
   plugins: [],
 }

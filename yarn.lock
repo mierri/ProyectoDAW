@@ -1445,7 +1445,7 @@ fraction.js@^4.3.7:
     "@fortawesome/free-brands-svg-icons" "^6.6.0"
     "@fortawesome/free-solid-svg-icons" "^6.6.0"
     "@fortawesome/react-fontawesome" "^0.2.2"
-    frontreviews "file:../../../../AppData/Local/Yarn/Cache/v6/npm-frontreviews-0.0.0-a27beaac-e967-4df4-aa6f-bda15755124e-1729808505036/node_modules/frontreviews"
+    frontreviews "file:../../../../Users/mafer/AppData/Local/Yarn/Cache/v6/npm-frontreviews-0.0.0-ec8cd16c-b9a8-4ec7-9418-42df4c5f026d-1730872629286/node_modules/frontreviews"
     react "^18.3.1"
     react-dom "^18.3.1"
     react-router-dom "^6.27.0"
