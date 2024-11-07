@@ -8,47 +8,69 @@ export const SegmentedControl = () => {
     };
 
     return (
-        <div className="flex items-center justify-left space-x-2 relative">
-            <button
-                className={`px-4 py-2 rounded-l ${selectedOption === 1 ? "bg-customYellow text-black" : "border-0 bg-white rounded text-sm drop-shadow-lg focus:outline-none focus:ring ease-linear transition-all duration-150"} hover:bg-gray-100`}
-                onClick={() => handleSelect(1)}
-            >
-                1
-            </button>
-            <button
-                className={`px-4 py-2 ${selectedOption === 2 ? "bg-customYellow text-black text-sm" : "border-0 bg-white rounded text-sm drop-shadow-lg focus:outline-none focus:ring ease-linear transition-all duration-150"} hover:bg-gray-100`}
-                onClick={() => handleSelect(2)}
-            >
-                2
-            </button>
-            <button
-                className={`px-4 py-2 ${selectedOption === 3 ? "bg-customYellow text-black text-sm" : "border-0 bg-white rounded text-sm drop-shadow-lg focus:outline-none focus:ring ease-linear transition-all duration-150"} hover:bg-gray-100`}
-                onClick={() => handleSelect(3)}
-            >
-                3
-            </button>
-            <button
-                className={`px-4 py-2 ${selectedOption === 4 ? "bg-customYellow text-black text-sm" : "border-0 bg-white rounded text-sm drop-shadow-lg focus:outline-none focus:ring ease-linear transition-all duration-150"} hover:bg-gray-100`}
-                onClick={() => handleSelect(4)}
-            >
-                4
-            </button>
-            <button
-                className={`px-4 py-2 rounded-r ${selectedOption === 5 ? "bg-customYellow text-black text-sm" : "border-0 bg-white rounded text-sm drop-shadow-lg focus:outline-none focus:ring ease-linear transition-all duration-150"} hover:bg-gray-100`}
-                onClick={() => handleSelect(5)}
-            >
-                5
-            </button>
+        <div className="w-full flex space-x-1">
+            {[1, 2, 3, 4, 5].map((number) => (
+                <button
+                    key={number}
+                    onClick={() => handleSelect(number)}
+                    className={`w-full px-4 py-2 rounded ${
+                        selectedOption === number ? "bg-customYellow text-black" : "hover:bg-gray-100 bg-white drop-shadow-lg text-gray-600"
+                    } focus:outline-none ease-linear transition-all duration-50`}
+                    type="button"
+                >
+                    {number}
+                </button>
+            ))}
+        </div>
+    );
+};
+
+// eslint-disable-next-line react/prop-types
+const YesNoSegmentedControl = ({ selected, onSelect }) => {
+    const options = ["Sí", "No"];
+
+    return (
+        <div className="w-full flex space-x-1">
+            {options.map((option) => (
+                <button
+                    key={option}
+                    onClick={() => onSelect(option)}
+                    className={`w-full px-4 py-2 rounded ${
+                        selected === option ? "bg-customYellow text-black" : "hover:bg-gray-100 bg-white drop-shadow-lg text-gray-600"
+                    } focus:outline-none ease-linear transition-all duration-50`}
+                    type="button"
+                >
+                    {option}
+                </button>
+            ))}
         </div>
     );
 };
 
 export const FormularioEvaluacion = () => {
-  return (
-      <main className="min-h-screen flex items-center justify-center font-poppins">
-          <div className="w-full lg:w-9/12 px-4 mx-auto mt-6">
-              <h1 className="px-3 mt-10 text-4xl font-bold text-left text-customYellow">Comparte tu Experiencia.</h1>
-              <p className="px-3 text-lg leading-relaxed mt-4 mb-4 text-gray-600 text-justify">
+
+    const [recommendClass, setRecommendClass] = useState(null);
+    const [attendance, setAttendance] = useState(null);
+
+    const [ratings, setRatings] = useState({
+        question1: null,
+        question2: null,
+        question3: null,
+    });
+
+    // Function to handle the selection for each question
+    const handleSelect = (question, rating) => {
+        setRatings((prevRatings) => ({
+            ...prevRatings,
+            [question]: rating,
+        }));
+    };
+
+    return (
+        <main className="min-h-screen flex font-poppins">
+            <div className="w-full lg:w-10/12 px-4 mx-auto mt-2">
+                <h1 className="px-3 mt-10 text-4xl font-bold text-left text-customYellow">Comparte tu Experiencia.</h1>
+                <p className="px-3 text-md leading-relaxed mt-4 mb-4 text-gray-600 text-justify">
                   Tu opinión es muy importante para ayudar a otros estudiantes a tomar decisiones informadas sobre sus clases y profesores. Tus comentarios pueden marcar la diferencia y contribuir a una mejor experiencia universitaria para todos. ¡Gracias por tomarte el tiempo de compartir tu experiencia!
               </p>
               <div className="mt-10 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-1.5">
@@ -60,7 +82,7 @@ export const FormularioEvaluacion = () => {
                       </div>
                   </div>
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                      <form>
+                      <form method="post">
                           <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
                               Datos Generales
                           </h6>
@@ -111,9 +133,9 @@ export const FormularioEvaluacion = () => {
                                           defaultValue=""
                                       >
                                           <option value="" disabled>Selecciona a tu profesor</option>
-                                          <option value="curso1">Profesor 1</option>
-                                          <option value="curso2">Profesor 2</option>
-                                          <option value="curso3">Profesor 3</option>
+                                          <option value="profe1">Profesor 1</option>
+                                          <option value="profe2">Profesor 2</option>
+                                          <option value="profe3">Profesor 3</option>
                                       </select>
                                   </div>
                               </div>
@@ -129,9 +151,9 @@ export const FormularioEvaluacion = () => {
                                           defaultValue=""
                                       >
                                           <option value="" disabled>Selecciona tu carrera</option>
-                                          <option value="curso1">Carrera 1</option>
-                                          <option value="curso2">Carrera 2</option>
-                                          <option value="curso3">Carrera 3</option>
+                                          <option value="carrera1">Carrera 1</option>
+                                          <option value="carrera2">Carrera 2</option>
+                                          <option value="carrera3">Carrera 3</option>
                                       </select>
                                   </div>
                               </div>
@@ -139,21 +161,85 @@ export const FormularioEvaluacion = () => {
 
                           <hr className="mt-6 border-b-1 border-blueGray-300"/>
 
-                          <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+                          <h6 className="text-blueGray-400 text-sm mt-3 font-bold uppercase">
                               Calificaciones
                           </h6>
+                          <p className="text-sm mb-6 text-gray-700">Considera 1 como &apos;Muy Bajo&apos; y 5 como &apos;Muy Alto&apos;.</p>
                           <div className="flex flex-wrap">
                               <div className="w-full lg:w-6/12 px-4">
-                                  <div className="relative w-full mb-3">
+                                  <div className="relative w-full mb-5">
                                       <label
                                           className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
                                           ¿Qué tan claro fue el profesor?
                                       </label>
-                                      <SegmentedControl/>
+                                      <SegmentedControl
+                                          selected={ratings.question1}
+                                          onSelect={(rating) => handleSelect("question1", rating)}
+                                      />
                                   </div>
                               </div>
-
+                              <div className="w-full lg:w-6/12 px-4">
+                                  <div className="relative w-full mb-5">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                          ¿Cuál fue la facilidad de la clase?
+                                      </label>
+                                      <SegmentedControl
+                                          selected={ratings.question2}
+                                          onSelect={(rating) => handleSelect("question2", rating)}
+                                      />
+                                  </div>
+                              </div>
+                              <div className="w-full lg:w-6/12 px-4">
+                                  <div className="relative w-full mb-5">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                          ¿El profesor es accesible a ayudarte?
+                                      </label>
+                                      <SegmentedControl
+                                          selected={ratings.question2}
+                                          onSelect={(rating) => handleSelect("question2", rating)}
+                                      />
+                                  </div>
+                              </div>
+                              <div className="w-full lg:w-6/12 px-4">
+                                  <div className="relative w-full mb-5">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                          ¿Cuál fue la cantidad de trabajo?
+                                      </label>
+                                      <SegmentedControl
+                                          selected={ratings.question3}
+                                          onSelect={(rating) => handleSelect("question3", rating)}
+                                      />
+                                  </div>
+                              </div>
+                              <div className="w-full lg:w-6/12 px-4">
+                                  <div className="relative w-full mb-5">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                          ¿Recomendarías al profesor?
+                                      </label>
+                                      <YesNoSegmentedControl
+                                          selected={recommendClass}
+                                          onSelect={(answer) => setRecommendClass(answer)}
+                                      />
+                                  </div>
+                              </div>
+                              <div className="w-full lg:w-6/12 px-4">
+                                  <div className="relative w-full mb-5">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                          ¿La asistencia es obligatoria?
+                                      </label>
+                                      <YesNoSegmentedControl
+                                          selected={attendance}
+                                          onSelect={(answer) => setAttendance(answer)}
+                                      />
+                                  </div>
+                              </div>
                           </div>
+
 
                           <hr className="mt-6 border-b-1 border-blueGray-300"/>
 
@@ -163,12 +249,13 @@ export const FormularioEvaluacion = () => {
                           <div className="flex flex-wrap">
                               <div className="w-full lg:w-12/12 px-4">
                                   <div className="relative w-full mb-3">
-                                      <label className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                      <label
+                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
                                           Complementa tu evaluación
                                       </label>
                                       <textarea type="text"
-                                                className="comments mt-3 drop-shadow-lg border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                                rows="4">oli</textarea>
+                                                className="comments mt-3 drop-shadow-lg border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Escribe aquí tus comentarios"
+                                                rows="4"></textarea>
                                   </div>
                               </div>
                           </div>
