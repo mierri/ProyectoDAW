@@ -1,71 +1,25 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faEye, faEyeSlash, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "../../hooks";
+import { handleKeyPress, showErrorAlert, showSuccess, validateEmailUADY, validatePassword, validateUser } from "./";
 
 const initialFormSignUp = {
   userSignUp: "",
   emailSignUp: "",
   passwordSignUp: "",
-}
+};
+
+const formValidations = {
+  userSignUp: [(value) => value.trim() !== '', 'El usuario es obligatorio'],
+  emailSignUp: [(value) => value.trim() !== '', 'El correo es obligatorio'],
+  passwordSignUp: [(value) => value.trim() !== '', 'La contraseña es obligatoria'],
+};
 
 export const FormSignUp = () => {
-
-  useEffect(() => {
-    const inputUser = document.getElementById('userSignUp');
-    const inputEmail = document.getElementById('emailSignUp');
-    const inputPassword = document.getElementById('passwordSignUp');
-
-    const validateEmailUADY = (e) => {
-      const emailRegex = /^a\d{8}@alumnos\.uady\.mx$/;
-      if (!emailRegex.test(e.target.value)) {
-        e.target.setCustomValidity("Para comentar necesitas ser estudiante, ¡usa tu correo institucional!");
-      } else {
-        e.target.setCustomValidity("");
-      }
-    };
-
-    const validatePassword = (e) => {
-      const password = e.target.value;
-      const minLength = 6;
-      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>-_]/;
-      const numberRegex = /[0-9]/;
-      const letterRegex = /[a-zA-Z]/;
-
-      let errorMessage = "";
-      if (password.length < minLength) {
-        errorMessage = `La contraseña debe tener al menos ${minLength} caracteres.`;
-      } else if (!specialCharRegex.test(password)) {
-        errorMessage = "La contraseña debe contener al menos un carácter especial.";
-      } else if (!numberRegex.test(password)) {
-        errorMessage = "La contraseña debe contener al menos un número.";
-      } else if (!letterRegex.test(password)) {
-        errorMessage = "La contraseña debe contener al menos una letra.";
-      }
-
-      e.target.setCustomValidity(errorMessage);
-    };
-    
-    const handleKeyPress = (e) => {
-      const spaceRegex = /[\s]/;
-      const letterNumsRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]+$/;
-      if (spaceRegex.test(e.key) || !letterNumsRegex.test(e.key)) {
-        e.preventDefault(); 
-      }
-    };
-
-    inputUser.addEventListener('keypress', handleKeyPress);
-    inputEmail.addEventListener('input', validateEmailUADY);
-    inputPassword.addEventListener('input', validatePassword);
-
-    return () => {
-      inputUser.removeEventListener('keypress', handleKeyPress);
-      inputEmail.removeEventListener('input', validateEmailUADY);
-      inputPassword.removeEventListener('input', validatePassword);
-    };
-    
-  }, [])
-  
+  const [visibilityPassword, setVisibilityPassword] = useState(false);
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   const {
     userSignUp,
@@ -73,24 +27,70 @@ export const FormSignUp = () => {
     passwordSignUp,
     onInputChange,
     onResetForm,
-  } = useForm(initialFormSignUp);
+    isFormValid,
+  } = useForm(initialFormSignUp, formValidations);
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value.trim();
+    setErrorEmail(email && !validateEmailUADY(email));
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setPasswordError(password ? validatePassword(password) : "");
+  };
+
+  const handlePasswordBlur = (e) => {
+    const password = e.target.value;
+    if (password === '') setPasswordError('');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(!isFormValid){
+      showErrorAlert('Todos los campos son obligatorios');
+      return;
+    }
+
+    const validations = [
+      { valid: validateUser(userSignUp), message: 'Ingrese un usuario válido, solo letras y números' },
+      { valid: validateEmailUADY(emailSignUp), message: 'Ingrese un correo institucional válido' },
+      { valid: !validatePassword(passwordSignUp), message: 'Ingrese una contraseña válida' }
+    ]
+
+    for (const { valid, message } of validations) {
+      if (!valid) {
+        showErrorAlert(message);
+        return;
+      }
+    }
+
+    showSuccess('Se ha realizado su registro!');
+    onResetForm();
+    // TODO: implementar envío de formulario
+  };
+
+  const toggleVisibilityPassword = () => {
+    setVisibilityPassword(!visibilityPassword);
+  };
 
   return (
-    <form className="form-login sign-up-form">
+    <form onSubmit={handleSubmit} className="form-login sign-up-form">
       <h2 className="title">Registrarse</h2>
 
       <div className="input-field--login">
-      <label htmlFor="userSignUp" className="sr-only">Usuario</label>
+        <label htmlFor="userSignUp" className="sr-only">Usuario</label>
         <i>
           <FontAwesomeIcon icon={faUser} />
         </i>
-        <input 
-          type="text" 
-          placeholder="Usuario" 
+        <input
+          type="text"
+          placeholder="Usuario"
           name="userSignUp"
           id="userSignUp"
           value={userSignUp}
           onChange={onInputChange}
+          onKeyDown={handleKeyPress}
           autoComplete="username"
         />
       </div>
@@ -100,15 +100,17 @@ export const FormSignUp = () => {
         <i>
           <FontAwesomeIcon icon={faEnvelope} />
         </i>
-        <input 
-          type="email" 
+        <input
+          type="email"
           placeholder="Email"
           name="emailSignUp"
           id="emailSignUp"
           value={emailSignUp}
           onChange={onInputChange}
-          autoComplete="email" 
+          onBlur={handleEmailChange}
+          autoComplete="email"
         />
+        {errorEmail && <p className="error-message">Para comentar necesitas ser estudiante, ¡usa tu correo institucional!</p>}
       </div>
 
       <div className="input-field--login">
@@ -116,15 +118,25 @@ export const FormSignUp = () => {
         <i>
           <FontAwesomeIcon className="custom__icon" icon={faLock} />
         </i>
-        <input 
-          type="password" 
+        <input
+          type={visibilityPassword ? 'text' : 'password'}
           placeholder="Contraseña"
           name="passwordSignUp"
           id="passwordSignUp"
           value={passwordSignUp}
-          onChange={onInputChange}
-          autoComplete="new-password" 
+          onChange={(e) => {
+            onInputChange(e);
+            handlePasswordChange(e);
+          }}
+          onBlur={handlePasswordBlur}
+          autoComplete="new-password"
         />
+        <i>
+          <span onClick={toggleVisibilityPassword} className="cursor-pointer p-3" role="button">
+            {visibilityPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+          </span>
+        </i>
+        {passwordError && <p className="error-message">{passwordError}</p>}
       </div>
 
       <input type="submit" value="Registrarse" className="btn__login solid" />

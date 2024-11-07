@@ -13,7 +13,7 @@ export const getRoutes = () => createBrowserRouter([
         children: HomeRoutes,
     },
     {
-        path: "/login",
+        path: "/auth",
         element: <PublicRoutes children= {<AdminRouter />} />,
         children: AdminRoutes,
     },

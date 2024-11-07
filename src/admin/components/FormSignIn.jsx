@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
+import { faEye, faEyeSlash, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { handleKeyPress, showErrorAlert, showSuccess, validateUser } from "./helpers";
 import { useForm } from "../../hooks";
 
 const initialFormSingUp = {
@@ -8,35 +9,50 @@ const initialFormSingUp = {
   passwordSignIn: "",
 }
 
+const formValidations = {
+  userSignIn: [(value) => value.trim() !== '', 'El usuario es obligatorio'],
+  passwordSignIn: [(value) => value.trim() !== '', 'La contraseña es obligatoria'],
+}
+
 export const FormSignIn = () => {
+  const [visibilityPassword, setVisibilityPassword] = useState(false);
 
   const {
     userSignIn,
     passwordSignIn,
     onInputChange,
     onResetForm,
-  } = useForm(initialFormSingUp);
+    isFormValid,
+  } = useForm(initialFormSingUp, formValidations);
 
-  const onSubmitFormSignIn = ( event ) => {
-    event.preventDefault();
+  const onSubmitFormSignIn = (e) => {
+    e.preventDefault();
 
-    if ( userSignIn.trim() === '' || passwordSignIn.trim() === '' ) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Todos los campos son obligatorios',
-        icon:'error',
-        timer: 1500,
-        showConfirmButton: false,
-      });
+    if (!isFormValid) {
+      showErrorAlert('Todos los campos son obligatorios');
       return;
     };
 
+    const validations = [
+      { valid: validateUser(userSignIn), message: 'Ingrese un usuario válido, solo letras y números' },
+    ]
+
+    for (const { valid, message } of validations) {
+      if (!valid) {
+        showErrorAlert(message);
+        return;
+      }
+    }
+
+    showSuccess('Iniciando Sesión');
+    onResetForm();
     // TODO: Implementar lógica de inicio de sesión
-
     console.log({ userSignIn, passwordSignIn });
-  
-  }
+  };
 
+  const toggleVisibilityPassword = () => {
+    setVisibilityPassword(!visibilityPassword);
+  };
 
   return (
     <form onSubmit={onSubmitFormSignIn} className="form-login sign-in-form">
@@ -53,6 +69,7 @@ export const FormSignIn = () => {
           id="userSignIn" 
           value={userSignIn} 
           onChange={onInputChange}
+          onKeyDown={handleKeyPress}
           autoComplete="username"
         />
       </div>
@@ -62,7 +79,7 @@ export const FormSignIn = () => {
           <FontAwesomeIcon className="custom__icon" icon={faLock} />
         </i>
         <input 
-          type="password" 
+          type={visibilityPassword ? 'text' : 'password'} 
           placeholder="Contraseña" 
           name="passwordSignIn" 
           id="passwordSignIn" 
@@ -70,6 +87,11 @@ export const FormSignIn = () => {
           onChange={onInputChange}
           autoComplete="current-password"
         />
+        <i>
+          <span onClick={toggleVisibilityPassword} className="cursor-pointer p-3" role="button">
+            {visibilityPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+          </span>
+        </i>
       </div>
 
       <input
