@@ -15,7 +15,7 @@ Globales
 :root {
     --color-primary: #022C5E; /* Azul */
     --color-primary-dark: #011A3E; /* Azul oscuro para hover */
-    --color-secondary: #C68F33; /* Dorado */
+    --color-secondary: #E9A21A; /* Dorado */
     --color-secondary-dark: #8A5E22; /* Dorado oscuro para hover */
     --color-tertiary: #F2F2F2; /* Blanco */
     --color-accent: #4CAF50; /* Verde */
@@ -94,7 +94,7 @@ Header
 
 .menu__modal {
     position: absolute;
-    background-color: #a09c9c;
+    background-color: var(--color-secondary);
     max-width: 300px;
     min-height: 400px;
     width: 100%;
