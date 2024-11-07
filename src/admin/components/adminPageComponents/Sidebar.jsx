@@ -11,6 +11,7 @@ export const Sidebar = () => {
         <li><Link to="/gestionar-usuarios">Gestionar Usuarios</Link></li>
         <li><Link to="/base-datos">Base de Datos Cursos/Profesores</Link></li>
         <li><Link to="/configuraciones">Configuraciones</Link></li>
+        <li><Link to="/">Ir al proyecto</Link></li>
       </ul>
     </div>
   )
