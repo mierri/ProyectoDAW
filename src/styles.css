@@ -516,3 +516,136 @@ Formulario de Evaluaciones
 .comments {
     resize: none;
 }
+
+/*
+==============================
+Inicio
+==============================
+*/
+
+.MainInicio {
+    background-image: url('/fondo.jpg');
+    background-size: cover;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.containerInicio {
+    display: flex;
+    flex-grow: 1;
+    padding: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/*
+==============================
+Detalles evaluacion
+==============================
+*/
+
+.containerDetalles {
+    width: 80%;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 8px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.general-ratings {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.average-rating {
+    font-size: 1.2em;
+    color: #007bff;
+}
+
+.star-chart {
+    background-color: #e9e6e690;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.star-chart h3 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.star-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.star-row p {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+.comments h3 {
+    font-size: 1.4em;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.comment {
+    background-color: #e9e6e690;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.comment p:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.add-evaluation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.headerDetalles {
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.h1Detalles {
+    font-size: 1.8em;
+    color: #1E0A67;
+}
+
+.h2Detalles {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.buttonDetalles {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.8s;
+}
+
+.buttonDetalles:hover {
+    background-color: #1E0A67;
+    color: #EAB534;
+}

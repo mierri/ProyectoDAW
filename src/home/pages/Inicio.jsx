@@ -1,8 +1,13 @@
+import { Content, Header, ImageSection, Sidebar } from "../components/componentsInicio"
 
 export const Inicio = () => {
   return (
-    <main className="min-h-screen">
-        {/* Aqui va su html */}
-    </main>
+    <div className="MainInicio">
+      <Header />
+      <div className="containerInicio">
+        <Content />
+        <ImageSection />
+      </div>
+    </div>
   )
 }

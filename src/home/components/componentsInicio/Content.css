@@ -1,0 +1,29 @@
+.content {
+    width: 35%;
+    padding-right: 20px;
+  }
+  
+  .purpose, .latest-evaluations {
+    margin-bottom: 30px;
+  }
+  
+  .purpose h2, .latest-evaluations h2 {
+    font-size: 35px;
+    margin-bottom: 10px;
+    font-style: oblique;
+  }
+  
+  .yellow {
+    color: #e6b800;
+  }
+  
+  .blue {
+    color: #1E0A67;
+  }
+  
+  .purpose p, .latest-evaluations p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+  }
+  
