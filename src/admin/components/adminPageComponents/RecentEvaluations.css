@@ -1,0 +1,23 @@
+.recent_evaluations {
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .evaluation_table {
+    background-color: #bdc3c7;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+  
+  .evaluation_tableIMG {
+    background-color: #bdc3c7;
+    padding: 20px;
+    display: flex; 
+    justify-content: center;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+  

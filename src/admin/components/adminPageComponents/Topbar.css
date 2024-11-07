@@ -1,0 +1,25 @@
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f39c12;
+    padding: 15px;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .topbar .profile a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .topbar .profile a:hover {
+    color: #3498db;
+  }
+  
+  .logo {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+  }
+  

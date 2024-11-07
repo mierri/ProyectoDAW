@@ -1,0 +1,24 @@
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .stat_box {
+    background-color: #2a3a80;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 30%;
+    border-radius: 5px;
+  }
+  
+  .stat_box a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .stat_box a:hover {
+    color: #1abc9c;
+  }
+  
