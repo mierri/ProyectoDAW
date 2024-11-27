@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes, faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { BurgerIcon } from "../helpers/BurgerIcon";
+import { InfoUser } from "../helpers";
 
-export const NavbarMobile = () => {
+export const NavbarMobile = ({status, isDisplayUserInfo, toggleDisplayUserInfo}) => {
   const [clicked, setClicked] = useState(false);
 
   const handleNegativeClick = () => {
@@ -114,18 +115,21 @@ export const NavbarMobile = () => {
 
           <div className="mt-10 flex items-center justify-center">
             <div className="flex items-center justify-evenly flex-wrap w-full max-w-sm">
-              <Link className="bg-colorsecondary text-colortertiary hover:bg-colorsecondarydark py-2 px-4 rounded mt-5" to='/auth'>
+              <Link className={`bg-colorsecondary text-colortertiary hover:bg-colorsecondarydark py-2 px-4 rounded mt-5 ${(status === 'authenticated') ? 'pointer-events-none' : ''}`} to='/auth'>
                 Iniciar Sesión
               </Link>
-              <Link className="bg-colortertiary text-colorprimary border border-colorprimary hover:bg-gray-200 py-2 px-4 rounded mt-5" to='/auth'>
+              <Link className={`bg-colortertiary text-colorprimary border border-colorprimary hover:bg-gray-200 py-2 px-4 rounded mt-5 ${(status === 'authenticated') ? 'pointer-events-none' : ''}`} to='/auth'>
                 Crear Cuenta
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end mt-8">
-          <FontAwesomeIcon icon={faUserAlt} className="h-7 w-7 text-colorprimary" />
+        <div className="flex justify-end mt-8 relative">
+          <button onClick={toggleDisplayUserInfo} type="button" disabled={(status !== 'authenticated')}>
+            <FontAwesomeIcon icon={faUserAlt} className="h-7 w-7 text-colorprimary" />
+          </button>
+          {(isDisplayUserInfo && (status === 'authenticated')) && <InfoUser />}
         </div>
       </div>
     </>

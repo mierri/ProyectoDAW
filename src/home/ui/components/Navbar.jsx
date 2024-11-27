@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 import { NavbarMobile } from "./NavbarMobile";
 import { NavbarDesktop } from "./NavbarDesktop";
+import { useAuthStore } from "../../../hooks";
 
 export const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isDisplayUserInfo, setIsDisplayUserInfo] = useState(false);
+  const {status} = useAuthStore();
+
+
+  const toggleDisplayUserInfo = (e) => {
+    e.preventDefault();
+    
+    setIsDisplayUserInfo(!isDisplayUserInfo);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,9 +29,9 @@ export const Navbar = () => {
   return (
     <header className="p-6">
       {isMobile ? (
-        <NavbarMobile />
+        <NavbarMobile status={status} isDisplayUserInfo={isDisplayUserInfo} toggleDisplayUserInfo={toggleDisplayUserInfo}/>
       ) : (
-        <NavbarDesktop />
+        <NavbarDesktop status={status} isDisplayUserInfo={isDisplayUserInfo} toggleDisplayUserInfo={toggleDisplayUserInfo}/>
       )}
     </header>
   );

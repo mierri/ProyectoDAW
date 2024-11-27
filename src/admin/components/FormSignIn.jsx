@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { handleKeyPress, showErrorAlert, showSuccess, validateUser } from "./helpers";
-import { useForm } from "../../hooks";
+import { useAuthStore, useForm } from "../../hooks";
 
 const initialFormSingUp = {
   userSignIn: "",
@@ -16,6 +16,13 @@ const formValidations = {
 
 export const FormSignIn = () => {
   const [visibilityPassword, setVisibilityPassword] = useState(false);
+  const {startLogin, errorMessage} = useAuthStore();
+
+  useEffect(() => {
+    if (errorMessage !== undefined) {
+      showErrorAlert(errorMessage);
+    }
+  }, [errorMessage])
 
   const {
     userSignIn,
@@ -25,7 +32,7 @@ export const FormSignIn = () => {
     isFormValid,
   } = useForm(initialFormSingUp, formValidations);
 
-  const onSubmitFormSignIn = (e) => {
+  const onSubmitFormSignIn = async (e) => {
     e.preventDefault();
 
     if (!isFormValid) {
@@ -44,10 +51,12 @@ export const FormSignIn = () => {
       }
     }
 
-    showSuccess('Iniciando Sesión');
-    onResetForm();
-    // TODO: Implementar lógica de inicio de sesión
-    console.log({ userSignIn, passwordSignIn });
+    const userAccount = {
+      username: userSignIn,
+      password: passwordSignIn,
+    }
+
+    const msg = await startLogin(userAccount);
   };
 
   const toggleVisibilityPassword = () => {

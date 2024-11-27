@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faEye, faEyeSlash, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "../../hooks";
 import { handleKeyPress, showErrorAlert, showSuccess, validateEmailUADY, validatePassword, validateUser } from "./";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 const initialFormSignUp = {
   userSignUp: "",
@@ -20,6 +21,7 @@ export const FormSignUp = () => {
   const [visibilityPassword, setVisibilityPassword] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const {startRegisterAccount} = useAuthStore();
 
   const {
     userSignUp,
@@ -45,7 +47,7 @@ export const FormSignUp = () => {
     if (password === '') setPasswordError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if(!isFormValid){
       showErrorAlert('Todos los campos son obligatorios');
@@ -65,9 +67,20 @@ export const FormSignUp = () => {
       }
     }
 
-    showSuccess('Se ha realizado su registro!');
-    onResetForm();
-    // TODO: implementar envío de formulario
+    try {
+      const newAccount = {
+        username: userSignUp,
+        email: emailSignUp,
+        password: passwordSignUp,
+      }
+
+      const msg = await startRegisterAccount(newAccount);
+      showSuccess(msg);
+      onResetForm();
+      
+    } catch (error) {
+      showErrorAlert(error?.message);
+    }
   };
 
   const toggleVisibilityPassword = () => {

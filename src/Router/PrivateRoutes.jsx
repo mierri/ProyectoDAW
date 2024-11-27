@@ -22,6 +22,6 @@ export const PrivateRoutes = ({ children }) => {
   return status === "authenticated" ? (
     children
   ) : (
-    <Navigate to={"/"} />
+    <Navigate to={"/auth"} />
   );
 };

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faUserAlt } from "@fortawesome/free-solid-svg-icons";
+import { InfoUser } from "../helpers";
 
-export const NavbarDesktop = () => {
+export const NavbarDesktop = ({status, isDisplayUserInfo, toggleDisplayUserInfo}) => {
+
   return (
     <>
       <div className="flex flex-wrap justify-center items-center bg-white p-4">
@@ -30,8 +32,11 @@ export const NavbarDesktop = () => {
             </span>
           </form>
 
-          <div className="flex flex-grow basis-0 justify-end">
-            <FontAwesomeIcon icon={faUserAlt} className="h-7 w-7 text-colorsecondary" />
+          <div className="flex flex-grow basis-0 justify-end relative">
+            <button onClick={toggleDisplayUserInfo} type="button" disabled={(status !== 'authenticated')}>
+              <FontAwesomeIcon icon={faUserAlt} className="h-7 w-7 text-colorsecondary" />
+            </button>
+            {(isDisplayUserInfo && (status === 'authenticated')) && <InfoUser />}
           </div>
         </div>
 
@@ -56,10 +61,10 @@ export const NavbarDesktop = () => {
 
           <div className="w-full max-w-72">
             <div className="flex items-center justify-evenly">
-              <Link className="bg-colorsecondary text-white hover:bg-colorsecondarydark py-2 px-4 rounded" to='/auth'>
+              <Link className={`bg-colorsecondary text-white hover:bg-colorsecondarydark py-2 px-4 rounded ${(status === 'authenticated') ? 'pointer-events-none' : ''}`} to='/auth'>
                 Iniciar Sesión
               </Link>
-              <Link className="bg-white text-colorprimary border border-colorprimary hover:bg-gray-200 py-2 px-4 rounded" to='/auth'>
+              <Link className={`bg-white text-colorprimary border border-colorprimary hover:bg-gray-200 py-2 px-4 rounded ${(status === 'authenticated') ? 'pointer-events-none' : ''}`} to='/auth'>
                 Crear Cuenta
               </Link>
             </div>
