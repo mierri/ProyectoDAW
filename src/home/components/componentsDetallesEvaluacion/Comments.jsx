@@ -1,16 +1,30 @@
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Comments = () => {
+export const Comments = ({reviews}) => {
+
+  const renderBooleanIcon = (value) => {
+    return value ? (
+      <FontAwesomeIcon icon={faCheck} className="text-green-500" />
+    ) : (
+      <FontAwesomeIcon icon={faTimes} className="text-red-500" />
+    );
+  };
+  
   return (
     <div className="comments">
       <h3>Comentarios de Estudiantes</h3>
-      <div className="comment">
-        <p><strong>01/11/2024 - ⭐⭐⭐⭐⭐</strong></p>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-      </div>
-      <div className="comment">
-        <p><strong>15/10/2024 - ⭐⭐</strong></p>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-      </div>
+      {
+        reviews?.map((review) => (
+          <div className="comment" key={review.fecha}>
+            <p><strong>{review.fecha} - Recomienda al profesor: {renderBooleanIcon(review.recomendarPorfesor)} 
+              - Accesible a ayduar: {renderBooleanIcon(review.accesibilidadAyudar)}
+              - Asistencia Obligatoria: {renderBooleanIcon(review.asistenciaObligatoria)}
+            </strong></p>
+            <p>{review.comentario}</p>
+          </div>
+        ))
+      }
     </div>
   )
 }

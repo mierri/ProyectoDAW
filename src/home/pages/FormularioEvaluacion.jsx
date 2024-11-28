@@ -1,62 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DatosGenerales, SegmentedControl, YesNoSegmentedControl } from "../components";
+import { useAuthStore, useForm, useReviews } from "../../hooks";
+import { showAlert, showErrorAlert, showSuccess } from "../../admin/components";
 
-export const SegmentedControl = () => {
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    const handleSelect = (value) => {
-        setSelectedOption(value);
-    };
-
-    return (
-        <div className="w-full flex space-x-1">
-            {[1, 2, 3, 4, 5].map((number) => (
-                <button
-                    key={number}
-                    onClick={() => handleSelect(number)}
-                    className={`w-full px-4 py-2 rounded ${
-                        selectedOption === number ? "bg-customYellow text-black" : "hover:bg-gray-100 bg-white drop-shadow-lg text-gray-600"
-                    } focus:outline-none ease-linear transition-all duration-50`}
-                    type="button"
-                >
-                    {number}
-                </button>
-            ))}
-        </div>
-    );
-};
-
-// eslint-disable-next-line react/prop-types
-const YesNoSegmentedControl = ({ selected, onSelect }) => {
-    const options = ["Sí", "No"];
-
-    return (
-        <div className="w-full flex space-x-1">
-            {options.map((option) => (
-                <button
-                    key={option}
-                    onClick={() => onSelect(option)}
-                    className={`w-full px-4 py-2 rounded ${
-                        selected === option ? "bg-customYellow text-black" : "hover:bg-gray-100 bg-white drop-shadow-lg text-gray-600"
-                    } focus:outline-none ease-linear transition-all duration-50`}
-                    type="button"
-                >
-                    {option}
-                </button>
-            ))}
-        </div>
-    );
-};
+const initialFormValues = {
+    carreraText: '',
+    curso: '',
+    profesor: '',
+    opinionTextArea: '',
+}
 
 export const FormularioEvaluacion = () => {
-
-    const [recommendClass, setRecommendClass] = useState(null);
+    const {status, user} = useAuthStore();
+    const {startNewReview} = useReviews();
+    const {carreraText, curso, profesor, opinionTextArea, onInputChange} = useForm(initialFormValues);
+    const [recommendProfessor, setRecommendProfessor] = useState(null);
     const [attendance, setAttendance] = useState(null);
+    const [accessibleToHelp, setAccessibleToHelp] = useState(null);
 
     const [ratings, setRatings] = useState({
-        question1: null,
-        question2: null,
-        question3: null,
+        claridadProfesor: null,
+        facilidadClase: null,
+        cantidadTrabajo: null,
     });
+
+    const [valueFacultad, setValueFacultad] = useState('');
+    const [valueCarrera, setValueCarrera] = useState('');
+    const [valueNombreCurso, setValueNombreCurso] = useState('');
+    const [valueNombreMaestro, setValueNombreMaestro] = useState('');
+
+
+    useEffect(() => {
+        if (status === 'not-authenticated') {
+            showAlert("Debe de estar autenticado para realizar comentarios!");
+        }
+    }, [status]);
+
 
     // Function to handle the selection for each question
     const handleSelect = (question, rating) => {
@@ -64,6 +43,33 @@ export const FormularioEvaluacion = () => {
             ...prevRatings,
             [question]: rating,
         }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const carreraFinal = (valueCarrera === 'add_new') ? carreraText : valueCarrera;
+        const cursoFinal = (valueNombreCurso === 'add_new') ? curso : valueNombreCurso;
+        const maestroFinal = (valueNombreMaestro === 'add_new') ? profesor : valueNombreMaestro;
+
+        try {
+            const newReview = {
+                alumno: user.uid,
+                carrera: carreraFinal,
+                materia: cursoFinal,
+                maestro: maestroFinal,
+                facultad: valueFacultad,
+                recomendarProfesor: (recommendProfessor === 'Sí'),
+                asistenciaObligatoria: (attendance === 'Sí'),
+                accesibilidadAyudar: (accessibleToHelp === 'Sí'),
+                puntos: ratings,
+                comentario: opinionTextArea,
+            }
+            const msg = await startNewReview(newReview);
+
+            showSuccess(msg);
+        } catch (error) {
+            showErrorAlert(error.message)
+        }
     };
 
     return (
@@ -82,82 +88,24 @@ export const FormularioEvaluacion = () => {
                       </div>
                   </div>
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                      <form method="post">
+                      <form onSubmit={handleSubmit}>
                           <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
                               Datos Generales
                           </h6>
-                          <div className="flex flex-wrap">
-                              <div className="w-full lg:w-6/12 px-4">
-                                  <div className="relative w-full mb-3">
-                                      <label className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                                          Facultad
-                                      </label>
-                                      <select
-                                          id="faculty-select"
-                                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                          defaultValue=""
-                                      >
-                                          <option value="" disabled>Selecciona una facultad</option>
-                                          <option value="curso1">Facultad de Matemáticas</option>
-                                          <option value="curso2">Facultad de Ingeniería</option>
-                                          <option value="curso3">Facultad de Ingeniería Química</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="w-full lg:w-6/12 px-4">
-                                  <div className="relative w-full mb-3">
-                                      <label className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                                          Nombre del Curso
-                                      </label>
-                                      <select
-                                          id="course-select"
-                                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                          defaultValue=""
-                                      >
-                                          <option value="" disabled>Selecciona un curso</option>
-                                          <option value="curso1">Curso 1</option>
-                                          <option value="curso2">Curso 2</option>
-                                          <option value="curso3">Curso 3</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="w-full lg:w-6/12 px-4">
-                                  <div className="relative w-full mb-3">
-                                      <label
-                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                                          Profesor que impartió el curso
-                                      </label>
-                                      <select
-                                          id="professor-select"
-                                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                          defaultValue=""
-                                      >
-                                          <option value="" disabled>Selecciona a tu profesor</option>
-                                          <option value="profe1">Profesor 1</option>
-                                          <option value="profe2">Profesor 2</option>
-                                          <option value="profe3">Profesor 3</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="w-full lg:w-6/12 px-4">
-                                  <div className="relative w-full mb-3">
-                                      <label
-                                          className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                                          Carrera
-                                      </label>
-                                      <select
-                                          id="career-select"
-                                          className="custom-select border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                          defaultValue=""
-                                      >
-                                          <option value="" disabled>Selecciona tu carrera</option>
-                                          <option value="carrera1">Carrera 1</option>
-                                          <option value="carrera2">Carrera 2</option>
-                                          <option value="carrera3">Carrera 3</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
+                            <DatosGenerales
+                                carreraText={carreraText}
+                                curso={curso}
+                                profesor={profesor}
+                                onInputChange={onInputChange}
+                                valueFacultad={valueFacultad}
+                                setValueFacultad={setValueFacultad}
+                                valueCarrera={valueCarrera}
+                                setValueCarrera={setValueCarrera}
+                                valueNombreCurso={valueNombreCurso}
+                                setValueNombreCurso={setValueNombreCurso}
+                                valueNombreMaestro={valueNombreMaestro}
+                                setValueNombreMaestro={setValueNombreMaestro}
+                            />
 
                           <hr className="mt-6 border-b-1 border-blueGray-300"/>
 
@@ -173,8 +121,8 @@ export const FormularioEvaluacion = () => {
                                           ¿Qué tan claro fue el profesor?
                                       </label>
                                       <SegmentedControl
-                                          selected={ratings.question1}
-                                          onSelect={(rating) => handleSelect("question1", rating)}
+                                          selected={ratings.claridadProfesor}
+                                          onSelect={(rating) => handleSelect("claridadProfesor", rating)}
                                       />
                                   </div>
                               </div>
@@ -185,8 +133,8 @@ export const FormularioEvaluacion = () => {
                                           ¿Cuál fue la facilidad de la clase?
                                       </label>
                                       <SegmentedControl
-                                          selected={ratings.question2}
-                                          onSelect={(rating) => handleSelect("question2", rating)}
+                                          selected={ratings.facilidadClase}
+                                          onSelect={(rating) => handleSelect("facilidadClase", rating)}
                                       />
                                   </div>
                               </div>
@@ -196,9 +144,9 @@ export const FormularioEvaluacion = () => {
                                           className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
                                           ¿El profesor es accesible a ayudarte?
                                       </label>
-                                      <SegmentedControl
-                                          selected={ratings.question2}
-                                          onSelect={(rating) => handleSelect("question2", rating)}
+                                      <YesNoSegmentedControl
+                                          selected={accessibleToHelp}
+                                          onSelect={(answer) => setAccessibleToHelp(answer)}
                                       />
                                   </div>
                               </div>
@@ -209,8 +157,8 @@ export const FormularioEvaluacion = () => {
                                           ¿Cuál fue la cantidad de trabajo?
                                       </label>
                                       <SegmentedControl
-                                          selected={ratings.question3}
-                                          onSelect={(rating) => handleSelect("question3", rating)}
+                                          selected={ratings.cantidadTrabajo}
+                                          onSelect={(rating) => handleSelect("cantidadTrabajo", rating)}
                                       />
                                   </div>
                               </div>
@@ -221,8 +169,8 @@ export const FormularioEvaluacion = () => {
                                           ¿Recomendarías al profesor?
                                       </label>
                                       <YesNoSegmentedControl
-                                          selected={recommendClass}
-                                          onSelect={(answer) => setRecommendClass(answer)}
+                                          selected={recommendProfessor}
+                                          onSelect={(answer) => setRecommendProfessor(answer)}
                                       />
                                   </div>
                               </div>
@@ -240,7 +188,6 @@ export const FormularioEvaluacion = () => {
                               </div>
                           </div>
 
-
                           <hr className="mt-6 border-b-1 border-blueGray-300"/>
 
                           <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
@@ -250,19 +197,26 @@ export const FormularioEvaluacion = () => {
                               <div className="w-full lg:w-12/12 px-4">
                                   <div className="relative w-full mb-3">
                                       <label
+                                          htmlFor="opinionTextArea"
                                           className="text-customYellow block uppercase text-blueGray-600 text-xs font-bold mb-2">
                                           Complementa tu evaluación
                                       </label>
-                                      <textarea type="text"
-                                                className="comments mt-3 drop-shadow-lg border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Escribe aquí tus comentarios"
-                                                rows="4"></textarea>
+                                      <textarea 
+                                        type="text"
+                                        id="opinionTextArea"
+                                        name="opinionTextArea"
+                                        value={opinionTextArea}
+                                        onChange={onInputChange}
+                                        className="comments mt-3 drop-shadow-lg border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Escribe aquí tus comentarios"
+                                        rows="4"></textarea>
                                   </div>
                               </div>
                           </div>
                           <div className="flex justify-center mt-6">
                               <button
-                                  type="submit"
-                                  className="boton-enviar text-white active:bg-green-600 font-bold uppercase text-md px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                disabled = {(status !== 'authenticated')}
+                                type="submit"
+                                className="boton-enviar text-white active:bg-green-600 font-bold uppercase text-md px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                               >
                                   Enviar
                               </button>

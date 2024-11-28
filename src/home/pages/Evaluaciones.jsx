@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { AllFacultades, AllProfesores } from "../components";
 
 export const Evaluaciones = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -125,6 +126,8 @@ export const Evaluaciones = () => {
                         </div>
                     </div>
                     <h2 className="mt-10 text-3xl font-bold text-left text-customYellow">Resultados: </h2>
+
+                    {activeTab === "Profesores" ? <AllProfesores /> : <AllFacultades />}
                 </div>
             </div>
         </main>

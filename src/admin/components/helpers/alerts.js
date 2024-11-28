@@ -20,3 +20,13 @@ export const showSuccess = ( message = '' ) => {
         showConfirmButton: false,
     });
 }
+
+export const showAlert = ( message = '' ) => {
+    Swal.fire({
+        title: 'Atención!',
+        text: message,
+        icon:'warning',
+        timer: 1500,
+        showConfirmButton: false,
+    });
+}
