@@ -17,7 +17,9 @@ export const Comments = ({reviews}) => {
       {
         reviews?.map((review) => (
           <div className="comment" key={review.fecha}>
-            <p><strong>{review.fecha} - Recomienda al profesor: {renderBooleanIcon(review.recomendarPorfesor)} 
+            <p><strong> 
+              {new Date(review.fecha).toLocaleDateString()} 
+              - Recomienda al profesor: {renderBooleanIcon(review.recomendarPorfesor)} 
               - Accesible a ayduar: {renderBooleanIcon(review.accesibilidadAyudar)}
               - Asistencia Obligatoria: {renderBooleanIcon(review.asistenciaObligatoria)}
             </strong></p>

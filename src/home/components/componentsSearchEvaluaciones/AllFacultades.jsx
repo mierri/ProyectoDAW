@@ -1,12 +1,32 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSearches } from "../../../hooks";
 
-export const AllFacultades = () => {
+export const AllFacultades = ({searchTerm}) => {
   const { maestrosPorFacultades } = useSearches();
+  const [maestrosPorFacultadesModificable, setMaestrosPorFacultadesModificable] = useState([]);
+
+  useEffect(() => {
+    setMaestrosPorFacultadesModificable(maestrosPorFacultades)
+  }, [maestrosPorFacultades])
+  
+  const filteredFacultades = maestrosPorFacultadesModificable.map((facultad) => {
+    const filteredMaestros = facultad.maestros.filter(({ maestro }) =>
+      maestro.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    return {
+      ...facultad,
+      maestros: filteredMaestros,
+    };
+  }).filter((facultad) => {
+    const matchesFacultad = facultad.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesFacultad || facultad.maestros.length > 0;
+  });
+
 
   return (
     <div className="container mx-auto p-4">
-      {maestrosPorFacultades.map((facultad) => (
+      {filteredFacultades.map((facultad) => (
         <div key={facultad._id} className="mb-8 p-6 border rounded-lg shadow-lg bg-white">
           <h2 className="text-3xl font-bold mb-4 text-colorprimary">{facultad.nombre}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

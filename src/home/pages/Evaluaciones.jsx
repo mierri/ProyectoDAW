@@ -5,9 +5,11 @@ export const Evaluaciones = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [activeTab, setActiveTab] = useState("Profesores");
+    const [searchTerm, setSearchTerm] = useState("");
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
+        setSearchTerm('');
     };
 
     const handleDropdownToggle = () => {
@@ -18,6 +20,10 @@ export const Evaluaciones = () => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setIsDropdownOpen(false);
         }
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value.toLowerCase());
     };
 
     useEffect(() => {
@@ -65,7 +71,7 @@ export const Evaluaciones = () => {
                     </ul>
 
                     <div className="flex">
-                        <button id="dropdown-button"
+                        {/* <button id="dropdown-button"
                                 ref={dropdownRef}
                                 onClick={handleDropdownToggle}
                                 className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-5 text-sm font-medium text-white bg-hoverBlue rounded-bl-lg hover:bg-customBlue"
@@ -75,9 +81,11 @@ export const Evaluaciones = () => {
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                       d="m1 1 4 4 4-4"/>
                             </svg>
-                        </button>
+                        </button> */}
+                        <div className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-5 text-sm font-medium text-white bg-hoverBlue rounded-bl-lg hover:bg-customBlue">
+                        </div>
 
-                        {isDropdownOpen && (
+                        {/* {isDropdownOpen && (
                             <div id="dropdown"
                                  className="z-10 bg-hoverBlue rounded-lg shadow w-auto absolute mt-12"
                                  ref={dropdownRef}>
@@ -108,12 +116,15 @@ export const Evaluaciones = () => {
                                     </li>
                                 </ul>
                             </div>
-                        )}
+                        )} */}
 
                         <div className="relative w-full">
                             <input type="search" id="search-dropdown"
                                    className="block p-2.5 w-full z-20 text-sm text-white bg-hoverBlue rounded-e-lg border-s-customBlue border-s-2 focus:outline-none"
-                                   placeholder="Busca Profesores, Clases o Facultades..." required/>
+                                   placeholder="Busca Profesores, Clases o Facultades..." required
+                                   value={searchTerm}
+                                   onChange={handleSearchChange}
+                            />
                             <button type="submit"
                                     className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-customYellow rounded-e-lg hover:bg-customBlue">
                                 <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +138,7 @@ export const Evaluaciones = () => {
                     </div>
                     <h2 className="mt-10 text-3xl font-bold text-left text-customYellow">Resultados: </h2>
 
-                    {activeTab === "Profesores" ? <AllProfesores /> : <AllFacultades />}
+                    {activeTab === "Profesores" ? <AllProfesores searchTerm={searchTerm} /> : <AllFacultades searchTerm={searchTerm}/>}
                 </div>
             </div>
         </main>

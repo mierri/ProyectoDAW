@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useAuthStore } from "../../../hooks";
 
 export const Footer = () => {
+  const { user } = useAuthStore();
   const [messageContent, setMessageContent] = useState('');
   const [placeholder, setPlaceholder] = useState('Mensaje');
   const [isSending, setIsSending] = useState(false);
@@ -21,10 +23,19 @@ export const Footer = () => {
     setPlaceholder('Ha sido enviado');
     setMessageContent('');
 
+    const mailtoLink = createMailtoLink();
+    window.location.href = mailtoLink;
+
     setTimeout(() => {
       setPlaceholder('Mensaje');
       setIsSending(false);
     }, 2000);
+  };
+
+  const createMailtoLink = () => {
+    const subject = `Sugerencia de ${user.username}`;
+    const body = `Mensaje:\n${messageContent}`;
+    return `mailto:a22216346@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
