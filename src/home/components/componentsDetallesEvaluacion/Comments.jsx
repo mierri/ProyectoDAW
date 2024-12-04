@@ -19,7 +19,7 @@ export const Comments = ({reviews}) => {
           <div className="comment" key={review.fecha}>
             <p><strong> 
               {new Date(review.fecha).toLocaleDateString()} 
-              - Recomienda al profesor: {renderBooleanIcon(review.recomendarPorfesor)} 
+              - Recomienda al profesor: {renderBooleanIcon(review.recomendarProfesor)} 
               - Accesible a ayduar: {renderBooleanIcon(review.accesibilidadAyudar)}
               - Asistencia Obligatoria: {renderBooleanIcon(review.asistenciaObligatoria)}
             </strong></p>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import { AddEvaluationButton, Comments, GeneralRatings, Header } from "../components/componentsDetallesEvaluacion";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { Comments, GeneralRatings, Header } from "../components/componentsDetallesEvaluacion";
 import { useSearches } from "../../hooks";
 import { LoadingElement } from "../../helpers/LoadingElement";
 
 export const DetallesEvaluacion = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = useParams();
   const queryParams = new URLSearchParams(location.search);
   const facultadId = queryParams.get('facultad');
@@ -17,7 +18,14 @@ export const DetallesEvaluacion = () => {
 
   const { maestrosPorFacultades } = useSearches();
 
+  const isValidMongoId = (id) => /^[a-f\d]{24}$/i.test(id);
+
   useEffect(() => {
+    if (!isValidMongoId(id) || !isValidMongoId(facultadId)) {
+      navigate("/");
+      return;
+    }
+
     const facultad = maestrosPorFacultades.find((facultad) => facultad._id === facultadId);
     if (facultad) {
       const maestroEncontrado = facultad.maestros.find((m) => m.maestro._id === id);
@@ -25,10 +33,14 @@ export const DetallesEvaluacion = () => {
         setSelectedMaestro(maestroEncontrado.maestro);
         setMaestroReviews(maestroEncontrado.reviews);
         setFacultad(facultad);
+      } else {
+        navigate("/")
       }
+    } else {
+      navigate("/")
     }
     setIsLoading(false);
-  }, [id, facultadId, maestrosPorFacultades]);
+  }, [id, facultadId, maestrosPorFacultades, navigate]);
 
   return (
     isLoading ? (
@@ -38,7 +50,6 @@ export const DetallesEvaluacion = () => {
         <Header nombremaestro={selectedMaestro?.nombre} facultadnombre={facultad?.nombre} />
         <GeneralRatings puntos={maestroReviews?.map(review => review?.puntos)} />
         <Comments reviews={maestroReviews} />
-        {/* <AddEvaluationButton maestroId={selectedMaestro._id} /> */}
       </div>
     )
   );

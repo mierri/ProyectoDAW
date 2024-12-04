@@ -66,10 +66,11 @@ export const NavbarMobile = ({status, isDisplayUserInfo, toggleDisplayUserInfo})
               className="
                 border-2 border-gray-300 p-3 w-full rounded-3xl
                 drop-shadow-lg placeholder-gray-400 text-gray-700 bg-white text-sm 
-                shadow focus:outline-none focus:ring ease-linear transition-all duration-150  
+                shadow focus:outline-none focus:ring ease-linear transition-all duration-150
+                pointer-events-none opacity-0  
               "
             />
-            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <span className=" pointer-events-none opacity-0 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <FontAwesomeIcon icon={faSearch} />
             </span>
           </form>
