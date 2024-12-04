@@ -46,7 +46,7 @@ export const DetallesEvaluacion = () => {
     isLoading ? (
       <LoadingElement />
     ) : (
-      <div className="containerDetalles">
+      <div className="containerDetalles font-poppins">
         <Header nombremaestro={selectedMaestro?.nombre} facultadnombre={facultad?.nombre} />
         <GeneralRatings puntos={maestroReviews?.map(review => review?.puntos)} />
         <Comments reviews={maestroReviews} />

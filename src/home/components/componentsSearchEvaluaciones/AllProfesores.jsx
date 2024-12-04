@@ -84,7 +84,7 @@ export const AllProfesores = ({ searchTerm }) => {
                       className="mb-2 p-3 border rounded-lg shadow-sm bg-white"
                     >
                       <p className="text-sm text-gray-700 mb-1">
-                        Comentario: {review.comentario}
+                        <b>Comentario:</b> {review.comentario}
                       </p>
                       <div className="flex items-center mb-1">
                         <span className="text-sm text-gray-700 mr-2">

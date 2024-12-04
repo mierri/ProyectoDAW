@@ -9,6 +9,10 @@ Globales
 ==============================
 */
 
+body {
+    @apply font-poppins;
+}
+
 /* 
     Fuentes
 */

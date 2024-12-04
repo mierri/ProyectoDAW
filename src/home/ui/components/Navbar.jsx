@@ -27,7 +27,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <header className="p-6">
+    <header className="p-6 font-poppins">
       {isMobile ? (
         <NavbarMobile status={status} isDisplayUserInfo={isDisplayUserInfo} toggleDisplayUserInfo={toggleDisplayUserInfo}/>
       ) : (
